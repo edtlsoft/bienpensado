@@ -13,3 +13,7 @@
 
 Route::get('/', 'ProductController@index');
 Route::get('/productos', 'ProductController@show');
+Route::post('/producto/store', 'ProductController@store');
+Route::post('/producto/update_estado', 'ProductController@updateEstado');
+
+Route::get('/bodegas', 'ProductController@bodegas');

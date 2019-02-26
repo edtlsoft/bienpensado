@@ -9,6 +9,9 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}" defer></script>
+
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">  
 
@@ -22,14 +25,17 @@
         <div class="container">
             <div class="row mt-5">
                 <div class="col-6">
-                    <input type="text" v-model="search" class="form-control" placeholder="Buscar">
+                    <input type="text" class="form-control" placeholder="Buscar"
+                        v-model="search"
+                        @keyup.native="buscarProductos">
                 </div>
 
                 <div class="col-6">
-                    <button type="button" class="btn btn-primary btn-md float-right">Crear producto</button>
+                    <button type="button" class="btn btn-primary btn-md float-right" data-toggle="modal" data-target="#modal-crear-producto">
+                        Crear producto
+                    </button>
                 </div>
             </div>
-            
 
             <table class="table table-hover table-bordered">
             <thead>
@@ -43,18 +49,18 @@
             </thead>
             <tbody>
                 <tr v-for="producto in productos">
-                    <th v-text="producto.nombre"></th>
+                    <td v-text="producto.nombre"></td>
                     <td v-text="producto.bodega.nombre"></td>
-                    <th v-text="producto.nombre"></th>
-                    <th> <button class="btn" :class="producto.estado ? 'btn-success' : 'btn-danger'" v-text="producto.estado ? 'Activo' : 'Inactivo'"></button> </th>
-                    <th> <button type="button" class="btn btn-primary" @click="cambiarEstado(producto.id)">Cambiar estado</button> </th>
+                    <td v-text="producto.nombre"></td>
+                    <td> <button class="btn" :class="producto.estado == 1 ? 'btn-success' : 'btn-danger'" v-text="producto.estado == 1 ? 'Activo' : 'Inactivo'"></button> </td>
+                    <td> <button type="button" class="btn btn-primary" @click="cambiarEstado(producto.id, producto.estado)">Cambiar estado</button> </td>
                 </tr>
             </tbody>
             </table>
         </div> 
-    </div>
 
-<!-- Scripts -->
-<script src="{{ asset('js/app.js') }}"></script>
+        <crear-producto></crear-producto>
+    </div>    
+
 </body>
 </html>

@@ -9,45 +9,71 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-/**
- * The following block of code may be used to automatically register your
- * Vue components. It will recursively scan this directory for the Vue
- * components and automatically register them with their "basename".
- *
- * Eg. ./components/ExampleComponent.vue -> <example-component></example-component>
- */
 
-// const files = require.context('./', true, /\.vue$/i)
-// files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
+Vue.component('crear-producto', require('./components/NuevoProducto.vue').default);
+//import nuevoProducto from './components/NuevoProducto.vue';
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
-
-/**
- * Next, we will create a fresh Vue application instance and attach it to
- * the page. Then, you may begin adding components to this application
- * or customize the JavaScript scaffolding to fit your unique needs.
- */
+// EventBus
+import EventBus from './EventBus';
 
 const app = new Vue({
-    el: 'div#app',
+    el: '#app',
     data: {
         search: '',
         productos: [],
     },
+    created: function(){
+        EventBus.$on('recargarTablaProductos', () => { this.cargarListadoDeProductos() })
+    },
     methods: {
         cargarListadoDeProductos: function() {
-            axios.get('/productos')
+            axios.get('/productos', {
+                search: this.search,
+            })
             .then(response => {
-                this.productos = response.data.productos;
+                this.productos = response.data.productos.data;
             })
             .catch(errors => console.log(errors))
         },
 
-        cambiarEstado: function() {
-            alert('cambiarEstado');
+        cambiarEstado: function(id_producto, estado) {
+            let estado_producto = estado == 1 ? '0' : '1';
+
+            Swal.fire({
+                title: 'Esta seguro de cambiar el estado?',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Guardar',
+                cancelButtonText: 'Cancelar',
+              }).then((result) => {
+                if (result.value) {
+                    axios.post('/producto/update_estado',{
+                        id_producto: id_producto,
+                        estado: estado_producto,
+                    })
+                    .then(response => {
+                        Swal.fire(
+                            'Actualizado!',
+                            'El estado del producto se actualizo correctamente.',
+                            'success'
+                        );
+
+                        this.cargarListadoDeProductos();
+                    })
+                    .catch(errors => console.log(errors));
+                    
+                }
+            })
+        },
+
+        buscarProductos: function() {
+            this.cargarListadoDeProductos();
         }
     },
     mounted: function() {
+        //alert('mounted');
         this.cargarListadoDeProductos();
     }
 });

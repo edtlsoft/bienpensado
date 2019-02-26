@@ -17,10 +17,10 @@ class CreateProductsTable extends Migration
             $table->increments('id');
             $table->string('nombre', 50);
             $table->integer('cantidad');
-            $table->enum('estado', [1,2]);
+            $table->enum('estado', ['0','1']);
             $table->unsignedInteger('bodega_id');
             $table->foreign('bodega_id')->references('id')->on('bodegas');
-            $table->string('observacion');
+            $table->string('observacion')->nullable();
             $table->timestamps();
         });
     }

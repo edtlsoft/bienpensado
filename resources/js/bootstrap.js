@@ -54,3 +54,7 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+
+// SweetAlert2
+window.Swal = require('sweetalert2');
