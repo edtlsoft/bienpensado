@@ -14,20 +14,11 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(UsersTableSeeder::class);
 
-        Bodega::create(
-            ['id' => 1, 'nombre' => 'Centro']
-        );
-
-        Bodega::create(
-            ['id' => 2, 'nombre' => 'Oriente']
-        );
-
-        Bodega::create(
-            ['id' => 3, 'nombre' => 'Occidente']
-        );
-
-        Bodega::create(
-            ['id' => 4, 'nombre' => 'Sur']
-        );
+        Bodega::insert([
+            ['id' => 1, 'nombre' => 'Centro'],
+            ['id' => 2, 'nombre' => 'Oriente'],
+            ['id' => 3, 'nombre' => 'Occidente'],
+            ['id' => 4, 'nombre' => 'Sur'],
+        ]);
     }
 }
